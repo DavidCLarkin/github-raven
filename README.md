@@ -31,7 +31,20 @@ pip3 install -r requirements.txt
 
 ## Deploying
 
+Slack bot token: https://api.slack.com/apps/A04B2CURD6K/oauth?
+Slack Signing Secret: https://api.slack.com/apps/A04B2CURD6K/general?
+Forward channel id: ~good luck~ Go to the #twig-internal channel, click the name at the top to open the info modal, and on the About tab, scroll all the way down - you should see the channel ID there.
+
 Install fly.io, log in and run:
 ```
+flyctl launch, choose a unique name, choose a region, No PSQL, No Redis, No need for .dockerignore, don't deploy just yet
+fly set secrets ... for each individual secret in the .env
 fly deploy
 ```
+
+
+## Troubleshooting
+
+- There was a time when GitHub Raven stopped working, without any explanation. After some investigation, it wasn't really clear what the issue was. In this sort of situation, you can:
+  - Go to https://api.slack.com/methods/auth.test/test. Paste the `SLACK_BOT_TOKEN` and check that you get a good response from the Slack API (`"ok": true`, etc.)
+  - Ultimately, re-deploying the app by resetting the secrets on Fly.io and then running `fly deploy` helped. Not sure why though...
