@@ -32,6 +32,9 @@ def handle_message_event(body, logger, client):
             github_user: str = attachment.get('pretext', '')
             is_noisy_bot = next(
                 (True for bot in noisy_github_bots if github_user.find(bot) > -1), False)
+            # filter out passing BlackDuck check messages, since they're just extra noise
+            if "None of your dependencies violate policy!" in attachment.get("text", ""):
+                is_noisy_bot = True
             if not is_noisy_bot:
                 forward_attachments.append(attachment)
         logging.info(
