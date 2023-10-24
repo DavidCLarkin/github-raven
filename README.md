@@ -15,7 +15,7 @@ export FORWARD_CHANNEL_ID=<>
 
 Install [ngrok](https://ngrok.com/download) and run it
 ```
-ngrok http 300
+ngrok http 3000
 ```
 
 In another terminal set up python and run the local server:
@@ -32,7 +32,9 @@ pip3 install -r requirements.txt
 ## Deploying
 
 Slack bot token: https://api.slack.com/apps/A04B2CURD6K/oauth?
+
 Slack Signing Secret: https://api.slack.com/apps/A04B2CURD6K/general?
+
 Forward channel id: ~good luck~ Go to the #twig-internal channel, click the name at the top to open the info modal, and on the About tab, scroll all the way down - you should see the channel ID there.
 
 Install fly.io, log in and run:
