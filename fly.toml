@@ -1,10 +1,12 @@
-# fly.toml app configuration file generated for github-raven-v2 on 2023-07-12T09:54:27-07:00
+# fly.toml app configuration file generated for github-raven-v2 on 2023-10-24T12:19:53-07:00
 #
 # See https://fly.io/docs/reference/configuration/ for information about how to use this file.
 #
 
 app = "github-raven-v2"
 primary_region = "den"
+
+[build]
 
 [http_service]
   internal_port = 8080
