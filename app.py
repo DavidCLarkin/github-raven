@@ -30,17 +30,21 @@ def handle_message_event(body, logger, client):
         for attachment in attachments:
             logging.info(f'FROM: {attachment.get("pretext")}')
             github_user: str = attachment.get('pretext', '')
+            attachment_text: str = attachment.get("text", "")
             is_noisy_bot = next(
                 (True for bot in noisy_github_bots if github_user.find(bot) > -1), False)
             # filter out passing BlackDuck check messages, since they're just extra noise
-            if "None of your dependencies violate policy!" in attachment.get("text", ""):
+            if "None of your dependencies violate policy!" in attachment_text:
                 is_noisy_bot = True
             if not is_noisy_bot:
                 forward_attachments.append(attachment)
+            # if attachment text is blank, set it to generic fallback so we can silence Slack Bolt warning
+            if not attachment_text:
+                attachment_text = "Message from the Slack GitHub bot"
         logging.info(
             f'Forwarding github: {json.dumps(forward_attachments, sort_keys=True, indent=4)}')
         client.chat_postMessage(
-            channel=forward_channel_id, attachments=forward_attachments)
+            channel=forward_channel_id, attachments=forward_attachments, text=attachment_text)
 
 
 api = FastAPI()
