@@ -22,13 +22,13 @@ logging.basicConfig(level=logging.INFO, filename='log.log',
 def handle_message_event(body, logger, client):
     is_github_bot = body.get('event', {}).get(
         'bot_profile', {}).get('name', '') == 'GitHub'
-    logging.info('Received slack message')
+    logger.info('Received slack message')
 
     if is_github_bot:
         attachments = body.get('event', {}).get('attachments')
         forward_attachments = []
         for attachment in attachments:
-            logging.info(f'FROM: {attachment.get("pretext")}')
+            logger.info(f'FROM: {attachment.get("pretext")}')
             github_user: str = attachment.get('pretext', '')
             attachment_text: str = attachment.get("text", "")
             is_noisy_bot = next(
@@ -38,7 +38,7 @@ def handle_message_event(body, logger, client):
                 is_noisy_bot = True
             if not is_noisy_bot:
                 forward_attachments.append(attachment)
-        logging.info(
+        logger.info(
             f'Forwarding github: {json.dumps(forward_attachments, sort_keys=True, indent=4)}')
         # set whitespace char as text arg to silence Slack Bolt warning, see: https://github.com/slackapi/bolt-js/issues/1249#issuecomment-997113227
         client.chat_postMessage(
