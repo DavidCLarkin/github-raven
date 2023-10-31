@@ -16,6 +16,11 @@ noisy_github_bots = ['https://github.com/apps/sonarcloud']
 
 logging.basicConfig(level=logging.INFO, filename='log.log',
                     filemode='w', format='%(asctime)s - %(levelname)s - %(message)s')
+# define a Handler which writes INFO messages or higher to the sys.stderr
+console = logging.StreamHandler()
+console.setLevel(logging.INFO)
+# add the handler to the root logger
+logging.getLogger('').addHandler(console)
 
 
 @app.event("message")
