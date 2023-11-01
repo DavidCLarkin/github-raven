@@ -1,9 +1,13 @@
 import json
 import os
 import logging
+
 from slack_bolt import App
 from slack_bolt.adapter.fastapi import SlackRequestHandler
 from fastapi import FastAPI, Request
+
+from utils import _is_retry
+
 
 app = App(
     token=os.getenv('SLACK_BOT_TOKEN'),
@@ -61,3 +65,11 @@ async def endpoint(req: Request):
 @api.get("/")
 def hello():
     return 'Hello'
+
+
+@app.use
+def ignore_retry_request(request, ack, next, logger):
+    # https://github.com/slackapi/bolt-python/issues/693#issuecomment-1206887767
+    if _is_retry(request, logger):
+        return ack()
+    next()  # if this is not a retry, Bolt app should handle it
