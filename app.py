@@ -67,7 +67,13 @@ def hello():
     return 'Hello'
 
 
-@app.use
+@app.middleware
+def log_request_headers(logger, request, next):
+    logger.info("REQUEST HEADERS", request.headers)
+    next()
+
+
+@app.middleware
 def ignore_retry_request(request, ack, next, logger):
     # https://github.com/slackapi/bolt-python/issues/693#issuecomment-1206887767
     if _is_retry(request, logger):
