@@ -28,7 +28,8 @@ logging.getLogger('').addHandler(console)
 
 
 @app.event("message")
-def handle_message_event(body, logger, client):
+def handle_message_event(body, logger, client, ack):
+    ack()
     is_github_bot = body.get('event', {}).get(
         'bot_profile', {}).get('name', '') == 'GitHub'
     logger.info('Received slack message')
@@ -47,11 +48,9 @@ def handle_message_event(body, logger, client):
                 is_noisy_bot = True
             if not is_noisy_bot:
                 forward_attachments.append(attachment)
-        logger.info(
-            f'Forwarding github: {json.dumps(forward_attachments, sort_keys=True, indent=4)}')
+        logger.info(f'Forwarding github: {json.dumps(forward_attachments, sort_keys=True, indent=4)}')
         # set whitespace char as text arg to silence Slack Bolt warning, see: https://github.com/slackapi/bolt-js/issues/1249#issuecomment-997113227
-        client.chat_postMessage(
-            channel=forward_channel_id, attachments=forward_attachments)
+        client.chat_postMessage(channel=forward_channel_id, attachments=forward_attachments)
 
 
 api = FastAPI()
