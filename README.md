@@ -44,6 +44,7 @@ fly set secrets ... for each individual secret in the .env
 fly deploy
 ```
 
+If you've made changes, and you want to deploy the changes, just run `fly deploy` again.
 
 ## Troubleshooting
 
