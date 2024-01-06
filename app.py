@@ -48,7 +48,6 @@ def handle_message_event(body, logger, client, ack):
                 is_noisy_bot = True
             if not is_noisy_bot:
                 forward_attachments.append(attachment)
-        logger.info(f'Forwarding github: {json.dumps(forward_attachments, sort_keys=True, indent=4)}')
         # set whitespace char as text arg to silence Slack Bolt warning, see: https://github.com/slackapi/bolt-js/issues/1249#issuecomment-997113227
         client.chat_postMessage(channel=forward_channel_id, attachments=forward_attachments)
 
