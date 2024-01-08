@@ -48,8 +48,8 @@ def handle_message_event(body, logger, client, ack):
                 is_noisy_bot = True
             if not is_noisy_bot:
                 forward_attachments.append(attachment)
-        # set whitespace char as text arg to silence Slack Bolt warning, see: https://github.com/slackapi/bolt-js/issues/1249#issuecomment-997113227
-        client.chat_postMessage(channel=forward_channel_id, attachments=forward_attachments)
+        formatted_forward_attachments = json.dumps(forward_attachments)
+        client.chat_postMessage(channel=forward_channel_id, attachments=formatted_forward_attachments)
 
 
 api = FastAPI()
@@ -63,12 +63,6 @@ async def endpoint(req: Request):
 @api.get("/")
 def hello():
     return 'Hello'
-
-
-@app.use
-def log_request_headers(logger, request, next):
-    logger.info("REQUEST HEADERS", request.headers)
-    next()
 
 
 @app.use
