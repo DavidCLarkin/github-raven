@@ -46,6 +46,8 @@ fly deploy
 
 If you've made changes, and you want to deploy the changes, just run `fly deploy` again.
 
+If you change the name of the app, make sure to update the Request URL in [event subscriptions](https://api.slack.com/apps/A04B2CURD6K/event-subscriptions?) to match the new name or the updates won't be posted in Slack
+
 ## Troubleshooting
 
 - There was a time when GitHub Raven stopped working, without any explanation. After some investigation, it wasn't really clear what the issue was. In this sort of situation, you can:
